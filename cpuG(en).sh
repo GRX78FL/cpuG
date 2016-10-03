@@ -1,86 +1,59 @@
 #!/bin/bash 
 
 clear
-
-if [ "$(id -u)" != "0" ]; then
-	echo "Higher privileges are needed. "
+								#check if the user has root privileges
+if [ "$EUID" -ne 0 ]; then 
+	echo "You have to run this script as root."
+	echo "Exiting..."
+	sleep 1
+	exit
 fi
-echo `sudo chmod ugo=rw /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-echo `sudo chmod ugo=rw /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-echo `sudo chmod ugo=rw /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-echo `sudo chmod ugo=rw /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`
-clear
-
-sleep 1
-echo `cpufreq-info | grep "available governors:" | sed  -e '$!d'`
+								#Displaying the most common governors
+echo -e "Welcome in CpuG! \n"
+echo -e "Governors: \n \n 1 -> Powersave \n 2 -> Conservative \n 3 -> Ondemand \n 4 -> Performance \n 5 -> Userspace \n x -> Exit"
 echo " "
-echo " 1 -> Powersave"
-echo " 2 -> Conservative"
-echo " 3 -> Ondemand"
-echo " 4 -> Performance"
-echo " 5 -> Userspace"
-echo " x -> Exit"
-echo " "
-
 read -p "Set governor: " mod
 
-echo " "
-
-if [ "$mod" == "x" ] ; then								
+n=$(nproc)
+n=$(( $n - 1 ))
+								#checking if the user wants to exit
+if [ $mod == "x" ] ; then								
 		exit
 fi
-
-if [ $mod -eq 1 ] ; then
-		echo "Powersave. "
-		echo `echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-		echo `echo powersave > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-		echo `echo powersave > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-		echo `echo powersave > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`
-else
-		if [ $mod -eq 2 ] ; then
-				echo "Conservative."
-				echo `echo conservative > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-				echo `echo conservative > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-				echo `echo conservative > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-				echo `echo conservative > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`
-		else 
-				if [ $mod -eq 3 ] ; then 
-						echo "Ondemand."
-						echo `echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-						echo `echo ondemand > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-						echo `echo ondemand > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-						echo `echo ondemand > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`
-				else 
-						if [ $mod -eq 4 ] ; then
-								echo "Performance."
-								echo `echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-								echo `echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-								echo `echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-								echo `echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`								
+					#the loop uses a command (nproc) to know how many cores are installed in the system and manage them all
+while [ $n -ge 0 ]
+do
+	if [ $mod -eq 1 ]; then 
+		cpufreq-set -c $n -g powersave
+		else
+			if [ $mod -eq 2 ]; then
+				cpufreq-set -c $n -g conservative
+				else
+					if [ $mod -eq 3 ] ; then
+						cpufreq-set -c $n -g ondemand
 						else
-								if [ $mod -eq 5 ] ; then
-										echo `echo userspace > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
-										echo `echo userspace > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor`
-										echo `echo userspace > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor`
-										echo `echo userspace > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor`
-										sleep 1
-										clear
-										cpufreq-info | grep "available frequencies" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g' &&   sleep 1 
+							if [ $mod -eq 4 ] ; then
+								cpufreq-set -c $n -g performance
+								else
+									if [ $mod -eq 5 ] ; then
+										cpufreq-set -c $n -g userspace 
 										read -p "Set the max frequency (es: '1.60GHz'): " mxfreq
-										sudo cpufreq-set -c 0 -u "$mxfreq"
-										sudo cpufreq-set -c 1 -u "$mxfreq"
-										sudo cpufreq-set -c 2 -u "$mxfreq"
-										sudo cpufreq-set -c 3 -u "$mxfreq"
 										read -p "Set the min frequency (es: '1.20GHz'): " mnfreq
-										sudo cpufreq-set -c 0 -d "$mnfreq"
-										sudo cpufreq-set -c 1 -d "$mnfreq"
-										sudo cpufreq-set -c 2 -d "$mnfreq"
-										sudo cpufreq-set -c 3 -d "$mnfreq"
-								fi
-						fi
-				fi
-		fi
-fi
+										cpufreq-info | grep "available frequency" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g'
+										cpufreq-set -c $n -u "$mxfreq"
+										cpufreq-set -c $n -d "$mnfreq"
+										else 
+											echo "No available options for '$mod' entry, exiting..."
+											sleep 1
+											exit
+									fi
+							fi
+					fi
+			fi
+	fi	
+	n=$(( $n - 1 ))
+done
+
 sleep 1
 clear 
 exit
