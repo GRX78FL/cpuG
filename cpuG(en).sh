@@ -16,41 +16,41 @@ read -p "Set governor: " mod
 
 n=$(nproc)
 n=$(( $n - 1 ))
-								#checking if the user wants to exit
-if [ $mod == "x" ] ; then								
-		exit
-fi
-					#the loop uses a command (nproc) to know how many cores are installed in the system and manage them all
+								#the loop uses a command (nproc) to know how many cores are installed in the system and manage them all
 while [ $n -ge 0 ]
 do
-	if [ $mod -eq 1 ]; then 
-		cpufreq-set -c $n -g powersave
+	if [ $mod == "x" ] ; then								
+		exit
 		else
-			if [ $mod -eq 2 ]; then
-				cpufreq-set -c $n -g conservative
+			if [ $mod -eq 1 ]; then 
+				cpufreq-set -c $n -g powersave
 				else
-					if [ $mod -eq 3 ] ; then
-						cpufreq-set -c $n -g ondemand
+					if [ $mod -eq 2 ]; then
+						cpufreq-set -c $n -g conservative
 						else
-							if [ $mod -eq 4 ] ; then
-								cpufreq-set -c $n -g performance
+							if [ $mod -eq 3 ] ; then
+								cpufreq-set -c $n -g ondemand
 								else
-									if [ $mod -eq 5 ] ; then
-										cpufreq-set -c $n -g userspace 
-										read -p "Set the max frequency (es: '1.60GHz'): " mxfreq
-										read -p "Set the min frequency (es: '1.20GHz'): " mnfreq
-										cpufreq-info | grep "available frequency" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g'
-										cpufreq-set -c $n -u "$mxfreq"
-										cpufreq-set -c $n -d "$mnfreq"
-										else 
-											echo "No available options for '$mod' entry, exiting..."
-											sleep 1
-											exit
+									if [ $mod -eq 4 ] ; then
+										cpufreq-set -c $n -g performance
+										else
+											if [ $mod -eq 5 ] ; then
+												cpufreq-set -c $n -g userspace 
+												read -p "Set the max frequency (es: '1.60GHz'): " mxfreq
+												read -p "Set the min frequency (es: '1.20GHz'): " mnfreq
+												cpufreq-info | grep "available frequency" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g'
+												cpufreq-set -c $n -u "$mxfreq"
+												cpufreq-set -c $n -d "$mnfreq"
+												else 
+													echo "No available options for '$mod' entry, exiting..."
+													sleep 1
+													exit
+											fi
 									fi
 							fi
 					fi
-			fi
-	fi	
+			fi	
+	fi
 	n=$(( $n - 1 ))
 done
 
