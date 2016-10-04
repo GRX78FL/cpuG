@@ -17,6 +17,8 @@ read -p "Set governor: " mod
 n=$(nproc)
 n=$(( $n - 1 ))
 								#the loop uses a command (nproc) to know how many cores are installed in the system and manage them all
+
+
 while [ $n -ge 0 ]
 do
 	if [ $mod == "x" ] ; then								
@@ -35,12 +37,18 @@ do
 										cpufreq-set -c $n -g performance
 										else
 											if [ $mod -eq 5 ] ; then
-												cpufreq-set -c $n -g userspace 
+												cpufreq-info | grep "available frequency" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g'
 												read -p "Set the max frequency (es: '1.60GHz'): " mxfreq
 												read -p "Set the min frequency (es: '1.20GHz'): " mnfreq
-												cpufreq-info | grep "available frequency" | sed  -e '$!d ;s/:/\n/g; s/,/\n/g'
-												cpufreq-set -c $n -u "$mxfreq"
-												cpufreq-set -c $n -d "$mnfreq"
+												while [ $n -ge 0 ]
+												do
+													cpufreq-set -c $n -g userspace 
+													cpufreq-set -c $n -u "$mxfreq"
+													cpufreq-set -c $n -d "$mnfreq"
+													n=$(( $n - 1 ))
+												done
+												clear 
+												exit
 												else 
 													echo "No available options for '$mod' entry, exiting..."
 													sleep 1
@@ -53,7 +61,5 @@ do
 	fi
 	n=$(( $n - 1 ))
 done
-
-sleep 1
 clear 
 exit
