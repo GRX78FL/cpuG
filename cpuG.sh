@@ -31,8 +31,7 @@ function check_permissions {
 function init {
    
     option=0                          
-    n=$(( $(nproc) -1 ))
-    special_governor="userspace"   #declaring some essential variables, we don't want to
+    n=$(( $(nproc) -1 ))           #declaring some essential variables, we don't want to
     mod=0                          #regex the frick out of everything, do we?  ( ͡☉ ͜ʖ ͡☉)
    
     echo -en "\nWelcome in cpuG!\n\n"
