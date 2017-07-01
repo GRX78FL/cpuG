@@ -32,7 +32,7 @@ function init {
     
     option=0                          
     n=$(( $(nproc) -1 ))           #declaring some essential variables, we don't want to
-    mod=0                          #regex the frick out of everything, do we?  ( ͡͡☉ ͜ʖ ͡☉)
+    mod=0                          #regex the frick out of everything, do we? ( ͡☉ ͜ʖ ͡☉) 
     
     echo -en "\n[!] Welcome in cpuG!\n\n"
     governors_list=$(</sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors) #define where the information is taken from
