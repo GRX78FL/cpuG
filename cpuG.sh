@@ -63,7 +63,7 @@ function chose_governor {
 	0)                                   #there are only 6 governor modules in linux) that it can be associated with the same
 	    while (( $n >= 0 ))              #line in /tmp/governors.cpuG and as long as there are cores to which change the
 	    do                               #policy to we keep going on
-		echo -en "[✓]Intructing core #"$n"\n"
+		echo -en "[✓]Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") +1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
@@ -74,7 +74,7 @@ function chose_governor {
 	1)	   
 	    while (( $n >= 0 ))
 	    do
-		echo -en "[✓] Intructing core #"$n"\n"
+		echo -en "[✓] Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") +1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
@@ -85,7 +85,7 @@ function chose_governor {
 	2)
 	    while (( $n >= 0 ))
 	    do
-		echo -en "[✓] Intructing core #"$n"\n"
+		echo -en "[✓] Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") +1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
@@ -96,7 +96,7 @@ function chose_governor {
 	3)
 	    while (( $n >= 0 ))
 	    do
-		echo -en "[✓] Intructing core #"$n"\n"
+		echo -en "[✓] Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") +1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
@@ -107,7 +107,7 @@ function chose_governor {
 	4)
 	    while (( $n >= 0 ))
 	    do
-		echo -en "[✓] Intructing core #"$n"\n"
+		echo -en "[✓] Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") +1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
@@ -118,7 +118,7 @@ function chose_governor {
 	5)
 	    while (( $n >= 0 ))
 	    do
-		echo -en "[✓] Intructing core #"$n"\n"
+		echo -en "[✓] Instructing core #"$n"\n"
 		cpufreq-set -c $n -g $(sed -n $(( $(echo "$governor") + 1 ))p /tmp/governors.cpuG)
 		cpufreq-set -c $n -u "$max_freq" -d "$min_freq"
 		n=$(( $n -1 ))
