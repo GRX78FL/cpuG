@@ -10,7 +10,7 @@
 #
 #Scripted by AgentBlade a.k.a. GRX78FL
 #
-# https://github.com/AgentBlade
+# https://github.com/GRX78FL
 # https://dev.parrotsec.org/GRX78FL
 #
 # This script is free software as defined by
