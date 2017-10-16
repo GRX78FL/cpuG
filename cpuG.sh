@@ -8,8 +8,9 @@
 #limit my CPU clock speeds and policies.
 #Happy Hacking, I guess.
 #
-#Scripted by AgentBlade a.k.a. GRX78FL
+#Scripted by GRX78FL
 #
+# https://twitter.com/GRX78FL
 # https://github.com/GRX78FL
 # https://dev.parrotsec.org/GRX78FL
 #
